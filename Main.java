@@ -39,19 +39,12 @@ public class Main {
         // в выборке (т.е. людей с высшим образованием от 18 до 60 лет для женщин и до 65 лет для мужчин).
 
         List<Person> laborClass = persons.stream()
-                .filter(person -> person.getEducation() == Education.HIGHER)
-                .filter(person -> {
-                    boolean result;
-                    if (person.getSex() == Sex.MAN) {
-                        result = person.getAge() < 60;
-                    } else {
-                        result = person.getAge() < 65;
-                    }
-                    return result;
-                })
-                .filter(person -> person.getAge() >= 18)
-                .sorted(Comparator.comparing(Person::getFamily))
-                .collect(Collectors.toList());
+        .filter(person -> person.getEducation() == Education.HIGHER)
+        .filter(person -> person.getSex()==Sex.WOMAN && person.getAge()<65
+        || person.getSex()==Sex.MAN && person.getAge()<60)
+        .filter(person -> person.getAge() >= 18)
+        .sorted(Comparator.comparing(Person::getFamily))
+        .collect(Collectors.toList());
 
         System.out.println(laborClass);
 
